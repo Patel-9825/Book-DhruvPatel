@@ -8,6 +8,7 @@ namespace Lab5NETD.Models
     public class FinalBook
     {
         public int ID { get; set; }
+
         public string title { get; set; }
 
         public int isbn { get; set; }
