@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Lab5NETD.Data;
 using Lab5NETD.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Lab5NETD.Controllers
 {
@@ -44,6 +45,7 @@ namespace Lab5NETD.Controllers
         }
 
         // GET: Books/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +54,7 @@ namespace Lab5NETD.Controllers
         // POST: Books/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,title,isbn,version,price,condition")] FinalBook finalBook)
@@ -148,6 +151,16 @@ namespace Lab5NETD.Controllers
         private bool FinalBookExists(int id)
         {
             return _context.Books.Any(e => e.ID == id);
+        }
+
+        public async Task<IActionResult> Searching()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> ShowSearchResults(string SearchBook)
+        {
+            return View("Index", await _context.Books.Where(s => s.title.Contains(SearchBook)).ToListAsync());
         }
     }
 }
